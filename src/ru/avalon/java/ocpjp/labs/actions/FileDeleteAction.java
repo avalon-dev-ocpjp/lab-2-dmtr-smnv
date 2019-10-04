@@ -3,32 +3,25 @@ package ru.avalon.java.ocpjp.labs.actions;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 /**
- * Действие, которое копирует файлы в пределах дискового пространства.
+ * Действие, которое удаляет файлы в пределах дискового пространства.
  */
-public class FileCopyAction implements Action {
+public class FileDeleteAction implements Action {
 
-    // пременная для хранения текущего пути файла.
+    // переменная для хранения пути удаляемого файла.
     private Path from;
-
-    // переменная для хранения нового пути файла.
-    private Path to;
 
     /**
      * Конструктор класса.
-     *
-     * @param from - существующий путь копируемого файла.
-     * @param to - новый путь копируемого файла.
+     * @param from - путь удаляемого файла.
      */
-    public FileCopyAction(Path from, Path to) {
+    public FileDeleteAction(Path from) {
         this.from = from;
-        this.to = to;
     }
 
-    private void copy() throws IOException {
-        Files.copy(from, to, REPLACE_EXISTING);
+    private void delete() throws IOException {
+        Files.delete(from);
         try {
             close();
         } catch (Exception ignore) {
@@ -43,7 +36,7 @@ public class FileCopyAction implements Action {
     @Override
     public void run() {
         try {
-            copy();
+            delete();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -63,5 +56,5 @@ public class FileCopyAction implements Action {
     public void close() throws Exception {
         service.shutdown();
     }
-
+    
 }
